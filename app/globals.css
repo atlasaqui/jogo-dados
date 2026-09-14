@@ -1,0 +1,272 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  min-height: 100vh;
+  color: #f3f2ee;
+  background: #050506;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* glow vermelho vindo do topo + faixa dourada baixa, tipo "chaos energy" */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 116, 217, 0.35), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 50% 110%, rgba(244, 196, 48, 0.12), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* listras diagonais finas, sutis, lembrando as faixas do Shadow nos braços/pernas */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    115deg,
+    transparent 0px,
+    transparent 120px,
+    rgba(0, 116, 217, 0.05) 120px,
+    rgba(0, 116, 217, 0.05) 124px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pagina {
+  min-height: 100vh;
+  display: flex;
+  position: relative;
+  z-index: 1;
+}
+
+.jogo-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(20px, 4vh, 48px) clamp(16px, 6vw, 80px);
+}
+
+.titulo-app {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  text-align: center;
+  margin: 0;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #0074d9;
+}
+
+.rodada-info {
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 14px auto 0;
+  padding: 6px 22px;
+  width: fit-content;
+  color: #f4c430;
+  border: 1px solid rgba(244, 196, 48, 0.5);
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  letter-spacing: 3px;
+}
+
+.area-jogadores {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  gap: clamp(16px, 3vw, 40px);
+  margin: clamp(24px, 5vh, 56px) 0;
+  min-height: 0;
+}
+
+/* divisória central: barra vertical em gradiente vermelho->dourado, com brilho */
+.divisoria {
+  width: 3px;
+  background: linear-gradient(180deg, #0074d9 0%, #0074d9 50%, #f4c430 50%, #f4c430 100%);
+  box-shadow: 0 0 16px rgba(244, 196, 48, 0.5);
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* losango central estilo "chaos emerald" marcando o meio da arena */
+.divisoria::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  background: #f4c430;
+  transform: translate(-50%, -50%) rotate(45deg);
+  box-shadow: 0 0 18px 4px rgba(244, 196, 48, 0.75);
+}
+
+.card-jogador {
+  flex: 1;
+  background: #121214;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  clip-path: polygon(0 18px, 18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+  padding: clamp(20px, 3vw, 36px) clamp(16px, 2vw, 28px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+}
+
+.card-jogador:nth-child(1) {
+  box-shadow: inset 3px 0 0 #052f52;
+}
+
+.card-jogador:nth-child(3) {
+  box-shadow: inset -3px 0 0 #8a6a10;
+}
+
+.card-jogador.vez-ativa:nth-child(1) {
+  border-color: rgba(0, 116, 217, 0.6);
+  box-shadow: inset 3px 0 0 #0074d9, 0 0 30px rgba(0, 116, 217, 0.35);
+}
+
+.card-jogador.vez-ativa:nth-child(3) {
+  border-color: rgba(244, 196, 48, 0.6);
+  box-shadow: inset -3px 0 0 #f4c430, 0 0 30px rgba(244, 196, 48, 0.3);
+}
+
+.nome-jogador {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(0.75rem, 1.2vw, 1rem);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 3px;
+  color: #f3f2ee;
+}
+
+.dados-jogador {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(12px, 2vw, 28px);
+}
+
+.dado-imagem {
+  width: clamp(80px, 11vw, 140px);
+  height: clamp(80px, 11vw, 140px);
+  filter: drop-shadow(0 0 14px rgba(0, 116, 217, 0.55));
+}
+
+button {
+  width: 100%;
+  max-width: 260px;
+  padding: 14px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 3px;
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  transition: filter 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+  filter: brightness(1.25);
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-jogador1 {
+  background: #0074d9;
+  color: #050506;
+}
+
+.btn-jogador2 {
+  background: #f4c430;
+  color: #050506;
+}
+
+.btn-reiniciar {
+  max-width: 320px;
+  margin: 20px auto 0;
+  background: linear-gradient(90deg, #0074d9 0%, #0074d9 50%, #f4c430 50%, #f4c430 100%);
+  color: #050506;
+  box-shadow: 0 0 30px rgba(244, 196, 48, 0.4);
+}
+
+.placar {
+  display: flex;
+  justify-content: space-between;
+  background: #0a0a0b;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 14px clamp(16px, 4vw, 40px);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 1px;
+  color: #f3f2ee;
+}
+
+.placar span {
+  color: #f3f2ee;
+}
+
+/* faixa "MENSAGEM" — banner inferior, largura total, sempre visível */
+.mensagem-box {
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(0.8rem, 1.3vw, 1rem);
+  letter-spacing: 2px;
+  padding: 18px 16px;
+  margin-top: 4px;
+  min-height: 20px;
+  background: #0a0a0b;
+  border-left: 3px solid #0074d9;
+  border-right: 3px solid #f4c430;
+  color: #f4c430;
+  text-shadow: 0 0 10px rgba(244, 196, 48, 0.4);
+}
+
+@media (max-width: 640px) {
+  .area-jogadores {
+    flex-direction: column;
+  }
+  .divisoria {
+    width: auto;
+    height: 3px;
+    background: linear-gradient(90deg, #0074d9 0%, #0074d9 50%, #f4c430 50%, #f4c430 100%);
+  }
+  .divisoria::before {
+    box-shadow: 0 0 18px 4px rgba(244, 196, 48, 0.75);
+  }
+  .placar {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
+}
