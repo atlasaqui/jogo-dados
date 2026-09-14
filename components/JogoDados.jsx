@@ -119,7 +119,7 @@ export default function JogoDados() {
 
   return (
     <div className="jogo-container">
-      <h1 className="titulo-app">Jogo de Dados</h1>
+      <h1 className="titulo-app">Dice Game</h1>
 
       <p className="rodada-info">
         Rodada {rodadaAtual}/{TOTAL_RODADAS}
