@@ -71,7 +71,6 @@ export default function JogoDados() {
     setPlacar(novoPlacar);
 
     // era a última rodada? decide o resultado geral e acaba o jogo aqui mesmo,
-    // sem trocar de tela: o quadro do professor não tem uma tela separada,
     // então a MENSAGEM e o botão "Jogar novamente" aparecem dentro do mesmo container.
     if (rodadaAtual === TOTAL_RODADAS) {
       let mensagemFinal;
@@ -87,7 +86,6 @@ export default function JogoDados() {
       setVezDoJogador(0); // trava os botões de vez, só resta "Jogar novamente"
     } else {
       // não era a última: já deixa tudo pronto pra próxima rodada.
-      // não existe botão "avançar" no desenho do quadro, então o próprio
       // clique em "Jogar Jogador 1" da rodada seguinte já dispara tudo.
       setVezDoJogador(1);
     }
@@ -111,7 +109,7 @@ export default function JogoDados() {
     setResultadoFinal('');
   }
 
-  // --- TELA ÚNICA, igual ao quadro: título, rodada, os 2 jogadores lado a lado
+  // --- RENDERIZAÇÃO ---
   // (com um botão "Jogar" dentro de cada coluna), uma caixa "MENSAGEM" central
   // que mostra o resultado da rodada (ou o resultado final), e o botão
   // "Jogar novamente" que só aparece quando o jogo termina.
@@ -141,7 +139,7 @@ export default function JogoDados() {
           </button>
         </div>
 
-        {/* linha vertical entre as duas colunas, igual ao traço do quadro */}
+        
         <div className="divisoria" />
 
         <div className={`card-jogador ${vezDoJogador === 2 ? 'vez-ativa' : ''}`}>
